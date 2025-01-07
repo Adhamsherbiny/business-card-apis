@@ -21,7 +21,7 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.post("/users", (req, res) => {
+app.post("/create_new_user", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const role = req.body.role;
