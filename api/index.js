@@ -36,16 +36,8 @@ app.post("/create_new_user", (req, res) => {
         res.json("user is already exist");
       } else {
         const sql = `INSERT INTO users(username, password , role , email , phone ,  another_phone ) VALUES(?)`;
-        const passwordHash = password.hashSync(password, 10);
-        const values = [
-          username,
-          passwordHash,
-          role,
-          email,
-          phone,
-          anotherPhone,
-        ];
-        password.hash(10, (err, hash) => {
+        const values = [username, password, role, email, phone, anotherPhone];
+        bcrypt.hash(password, 10, (err, hash) => {
           connection.query(sql, [values], (err, result) => {
             if (err) {
               console.log(err);
