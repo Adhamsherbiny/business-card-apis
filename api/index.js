@@ -21,14 +21,15 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.post("/create_new_user", (req, res) => {
+app.post("/create_new_user", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const role = req.body.role;
   const email = req.body.email;
   const phone = req.body.phone;
   const anotherPhone = req.body.anotherPhone;
-  const values = [username, password, role, email, phone, anotherPhone];
+  const hasedPassword = await bcrypt.hash(password, 10);
+  const values = [username, hasedPassword, role, email, phone, anotherPhone];
 
   connection.query(
     "SELECT * FROM users where username = ?",
@@ -39,17 +40,11 @@ app.post("/create_new_user", (req, res) => {
       } else {
         const sql =
           "INSERT INTO users (username, password, role, email, phone, another_phone) VALUES (?)";
-        bcrypt.hash(password, 10, (err, hash) => {
+        connection.query(sql, [values], (err, result) => {
           if (err) {
             console.log(err);
           } else {
-            connection.query(sql, [values], (err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.json("user created");
-              }
-            });
+            res.json("user created");
           }
         });
       }
