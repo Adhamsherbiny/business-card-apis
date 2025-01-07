@@ -12,6 +12,13 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
   const sql = "SELECT * FROM users";
+  connection.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result);
+    }
+  });
 });
 
 app.listen(port, () => {
