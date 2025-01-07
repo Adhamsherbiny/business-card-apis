@@ -32,32 +32,28 @@ app.post("/users", (req, res) => {
     "SELECT * FROM users where username = ?",
     [username],
     async (err, result) => {
-      if (err) {
-        console.log(err);
+      if (result.length > 2) {
+        res.json("user is already exist");
       } else {
-        if (result.length > 0) {
-          res.json(result);
-        } else {
-          const sql = `INSERT INTO users(username, password , role , email , phone ,  another_phone ) VALUES(?)`;
-          const values = [
-            username,
-            passwordHash,
-            role,
-            email,
-            phone,
-            anotherPhone,
-          ];
-          const passwordHash = password.bcrypt();
-          await password.hash(10, (err, hash) => {
-            connection.query(sql, [values], (err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.json(result);
-              }
-            });
+        const sql = `INSERT INTO users(username, password , role , email , phone ,  another_phone ) VALUES(?)`;
+        const values = [
+          username,
+          passwordHash,
+          role,
+          email,
+          phone,
+          anotherPhone,
+        ];
+        const passwordHash = password.bcrypt();
+        await password.hash(10, (err, hash) => {
+          connection.query(sql, [values], (err, result) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.json(result);
+            }
           });
-        }
+        });
       }
     }
   );
