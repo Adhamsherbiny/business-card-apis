@@ -72,12 +72,18 @@ app.post("/login", (req, res) => {
       if (result.length > 0) {
         const isMatch = await bcrypt.compare(password, result[0].password);
         if (isMatch) {
-          res.json(result);
+          res.status(200).json({
+            response: result,
+            username: result[0].username,
+            loginStatus: true,
+            msg: "login successfully",
+            token: `TkN:${Math.floor(Math.random() * 10000)}#b`,
+          });
         } else {
           res.json("password is not correct");
         }
       } else {
-        res.json("user is not exist");
+        res.json({ loginStatus: false, msg: "login Faild" });
       }
     }
   );
