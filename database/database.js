@@ -7,4 +7,11 @@ const connection = mysql.createConnection({
   database: "bfcvg2iyjja5y2gv439u",
 });
 
+try {
+  connection.connect();
+  console.log("Database connected");
+} catch (error) {
+  console.log(error);
+}
+
 export default connection;
