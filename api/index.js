@@ -34,16 +34,22 @@ app.post("/create_new_user", (req, res) => {
     "SELECT * FROM users where username = ?",
     [username],
     (err, result) => {
-      if (result.length > 2) {
+      if (result.length > 0) {
         res.json("user is already exist");
       } else {
         const sql =
           "INSERT INTO users (username, password, role, email, phone, another_phone) VALUES (?)";
-        connection.query(sql, [values], (err, result) => {
+        bcrypt.hash(password, 10, (err, hash) => {
           if (err) {
             console.log(err);
           } else {
-            res.json("user created");
+            connection.query(sql, [values], (err, result) => {
+              if (err) {
+                console.log(err);
+              } else {
+                res.json("user created");
+              }
+            });
           }
         });
       }
