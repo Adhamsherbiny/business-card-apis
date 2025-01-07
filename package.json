@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./api/index.js",
-    "build": "nodemon ./api/index.js "
+    "dev": "node ./api/index.js",
+    "build": "node ./api/index.js "
   },
   "keywords": [],
   "author": "",
