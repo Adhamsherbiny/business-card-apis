@@ -61,7 +61,7 @@ app.post("/create_new_user", (req, res) => {
     }
   );
 });
-app.post("/login", (req, res) => {
+app.post("/auth/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
