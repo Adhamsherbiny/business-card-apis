@@ -80,7 +80,10 @@ app.post("/login", (req, res) => {
             token: `TkN:${Math.floor(Math.random() * 10000)}#b`,
           });
         } else {
-          res.json("password is not correct");
+          res.json({
+            loginStatus: false,
+            msg: "Username or Password is incorrect",
+          });
         }
       } else {
         res.json({ loginStatus: false, msg: "login Faild" });
