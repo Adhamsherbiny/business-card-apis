@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import connection from "../database/database.js";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 const app = express();
 const port = 6000;
 app.use(cors());
@@ -37,7 +37,7 @@ app.post("/create_new_user", (req, res) => {
       if (result.length > 0) {
         res.json("user is already exist");
       } else {
-        const hasedPassword = await bcrypt.hash(password, 10);
+        const hasedPassword = await bcryptjs.hash(password, 10);
 
         const values = [
           username,
@@ -70,7 +70,7 @@ app.post("/auth/login", (req, res) => {
     [username],
     async (err, result) => {
       if (result.length > 0) {
-        const isMatch = await bcrypt.compare(password, result[0].password);
+        const isMatch = await bcryptjs.compare(password, result[0].password);
         if (isMatch) {
           res.status(200).json({
             response: result,
@@ -105,7 +105,7 @@ app.put("/update_user", (req, res) => {
     [username],
     async (err, result) => {
       if (result.length > 0) {
-        const hasedPassword = await bcrypt.hash(password, 10);
+        const hasedPassword = await bcryptjs.hash(password, 10);
 
         const values = [
           username,
